@@ -16,7 +16,18 @@
 
 package com.google.bitcoin.examples;
 
-import com.google.bitcoin.core.*;
+import static com.google.common.base.Preconditions.checkNotNull;
+
+import java.io.File;
+import java.math.BigInteger;
+
+import com.google.bitcoin.core.AbstractWalletEventListener;
+import com.google.bitcoin.core.Address;
+import com.google.bitcoin.core.InsufficientMoneyException;
+import com.google.bitcoin.core.NetworkParameters;
+import com.google.bitcoin.core.Transaction;
+import com.google.bitcoin.core.Utils;
+import com.google.bitcoin.core.Wallet;
 import com.google.bitcoin.crypto.KeyCrypterException;
 import com.google.bitcoin.kits.WalletAppKit;
 import com.google.bitcoin.params.MainNetParams;
@@ -26,11 +37,6 @@ import com.google.bitcoin.utils.BriefLogFormatter;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.MoreExecutors;
-
-import java.io.File;
-import java.math.BigInteger;
-
-import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * ForwardingService demonstrates basic usage of the library. It sits on the network and when it receives coins, simply
@@ -43,18 +49,22 @@ public class ForwardingService {
     public static void main(String[] args) throws Exception {
         // This line makes the log output more compact and easily read, especially when using the JDK log adapter.
         BriefLogFormatter.init();
-        if (args.length < 2) {
+        if (args.length < 1) {
             System.err.println("Usage: address-to-send-back-to [regtest|testnet]");
             return;
         }
-
+        String btcForwardAddress=args[0];
+        String networkName="";
+        if(args.length>1)
+        	networkName=args[1];
+        
         // Figure out which network we should connect to. Each one gets its own set of files.
         NetworkParameters params;
         String filePrefix;
-        if (args[1].equals("testnet")) {
+        if (networkName.equals("testnet")) {
             params = TestNet3Params.get();
             filePrefix = "forwarding-service-testnet";
-        } else if (args[1].equals("regtest")) {
+        } else if (networkName.equals("regtest")) {
             params = RegTestParams.get();
             filePrefix = "forwarding-service-regtest";
         } else {
