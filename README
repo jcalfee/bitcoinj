@@ -8,10 +8,17 @@ useful information like JavaDocs. The outputs are under the target/ directory.
 Alternatively, just import the project using your IDE. IntelliJ has Maven integration once you tell it where to
 find your unzipped Maven install directory.
 
+Setup for Eclipse then create project files (chagne ~/workspace if necessary).  Note, projects fall under several
+sub-directories.  Point Eclipse's project import to the root directory to setup all projects in one import.
+
+  mvn -Declipse.workspace=~/workspace eclipse:add-maven-repo
+  mvn eclipse:eclipse
+
+
 Now try running one of the example apps:
 
   cd examples
-  mvn exec:java -Dexec.mainClass=com.google.bitcoin.examples.ForwardingService <insert a bitcoin address here>
+  mvn exec:java -Dexec.mainClass=com.google.bitcoin.examples.ForwardingService -Dexec.args="<insert a bitcoin address here>"
 
 It will download the block chain and eventually print a Bitcoin address. If you send coins to it,
 it will forward them on to the address you specified.
