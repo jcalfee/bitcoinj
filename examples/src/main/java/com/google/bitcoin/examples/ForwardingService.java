@@ -49,8 +49,8 @@ public class ForwardingService {
     public static void main(String[] args) throws Exception {
         // This line makes the log output more compact and easily read, especially when using the JDK log adapter.
         BriefLogFormatter.init();
-        if (args.length < 1) {
-            System.err.println("Usage: address-to-send-back-to [regtest|testnet]");
+        if (args.length < 2) {
+            System.err.println("Usage: address-to-send-back-to (regtest|testnet)");
             return;
         }
         String btcForwardAddress=args[0];
